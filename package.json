@@ -1,0 +1,36 @@
+{
+  "name": "pingpong",
+  "version": "1.0.0",
+  "description": "A ping pong game",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "start": "parcel src/index.html",
+    "build": "npm run clean && parcel build src/index.html --public-url ./",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shresthalucky/PingPong.git"
+  },
+  "keywords": [
+    "canvas",
+    "game",
+    "JavaScript",
+    "3D",
+    "table-tennis",
+    "ping-pong"
+  ],
+  "author": "Lucky Shrestha <luckshrestha@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shresthalucky/PingPong/issues"
+  },
+  "homepage": "https://github.com/shresthalucky/PingPong#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "gh-pages": "^3.1.0",
+    "parcel-bundler": "^1.12.4"
+  }
+}
