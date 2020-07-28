@@ -8,7 +8,7 @@ import Scoreboard from './components/scoreboard';
 import Opponent from './players/opponent';
 import User from './players/user';
 import { initAssets, removeAssetsEvent, referee } from './assets';
-import { resetGame, startGame, initEvents } from './game';
+import { resetGame, startGame, initMouseEvent } from './game';
 
 const canvas = document.getElementById('game');
 canvas.width = CONST.CANVAS_WIDTH;
@@ -42,8 +42,6 @@ const obj = {
   scoreboard
 };
 
-// Load required assets for game
-
 // Check for load of assets
 function loadComplete() {
   App.assets.loadCount++;
@@ -51,9 +49,22 @@ function loadComplete() {
   if (App.assets.loadCount >= App.assets.total) {
     App.state = CONST.STATE_LOADED;
     removeAssetsEvent(loadComplete);
-    initEvents();
+    initMouseEvent();
     run();
   }
+}
+
+// display DOM on pause
+function onPause() {
+  layoutElement.style.display = 'block';
+  infoElement.style.display = 'table';
+  infoElement.querySelector('.content').innerHTML = 'Press ESC to pause / resume';
+}
+
+// remove DOM on resume
+function onResume() {
+  layoutElement.style.display = 'none';
+  infoElement.style.display = 'none';
 }
 
 function handleFormSubmit(e) {
@@ -114,7 +125,7 @@ function initGame(config) {
   obj.scoreboard = new Scoreboard(scoreboardPosition, obj.player, config, displayWin);
 
   referee.play();
-  startGame(ctx, obj);
+  startGame(ctx, obj, onPause, onResume);
 }
 
 // Display winner component for game
