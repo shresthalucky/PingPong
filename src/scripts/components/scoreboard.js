@@ -162,7 +162,7 @@ class Scoreboard {
   }
 
   // Check for Best of Games completion
-  allOver = (animationId) => {
+  allOver = () => {
 
     const playerWins = this.scores.games.player;
     const opponentWins = this.scores.games.opponent;
@@ -171,14 +171,16 @@ class Scoreboard {
     if (playerWins === requiredWins) {
       Game.state.isOver = true;
       this.endFn(this.playerName);
-      return;
+      return true;
     }
 
     if (opponentWins === requiredWins) {
       Game.state.isOver = true;
       this.endFn('COMPUTER');
-      return;
+      return true;
     }
+
+    return false;
   }
 
   // Set server for game

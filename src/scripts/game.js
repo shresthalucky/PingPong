@@ -37,10 +37,14 @@ let ctx;
 let floor, walls, table, net, ball, player, opponent, scoreboard;
 let animationId;
 let lastFrameTime;
+let onPause, onResume;
 
-function startGame(gameCtx, obj) {
+function startGame(gameCtx, obj, pauseFn, resumeFn) {
   ctx = gameCtx;
   ({ floor, walls, table, net, ball, player, opponent, scoreboard } = obj);
+  onPause = pauseFn;
+  onResume = resumeFn;
+  initEscapeEvent();
   renderGame();
 }
 
@@ -192,9 +196,13 @@ function updateScore() {
 
 // Set game states for game over
 function gameOver() {
+  
   Game.state.inPlay = false;
   scoreboard.resetState();
-  scoreboard.allOver(animationId);
+
+  if(scoreboard.allOver()) {
+    removeEscapeEvent();
+  }
 }
 
 // Control opponent's bat movement with ball's movement
@@ -227,9 +235,7 @@ function logBounce() {
   opponent.logBounce(ball);
 }
 
-// Initialize game events
-function initEvents() {
-  // Pause or resume game
+function initMouseEvent() {
   document.addEventListener('mousemove', (e) => {
     if (player) {
       player.handleBatMovement(e);
@@ -237,4 +243,25 @@ function initEvents() {
   });
 }
 
-export { Game, startGame, resetGame, logBounce, animationId, initEvents };
+function escapeHandler(e) {
+  Game.state.pause = !Game.state.pause;
+  if (e.key === 'Escape') {
+    if (Game.state.pause) {
+      cancelAnimationFrame(animationId);
+      onPause();
+    } else {
+      onResume();
+      animationId = requestAnimationFrame(renderGame);
+    }
+  }
+}
+
+function initEscapeEvent() {
+  document.addEventListener('keyup', escapeHandler);
+}
+
+function removeEscapeEvent() {
+  document.removeEventListener('keyup', escapeHandler);
+}
+
+export { Game, startGame, resetGame, logBounce, initMouseEvent };
