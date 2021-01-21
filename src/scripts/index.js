@@ -1,16 +1,17 @@
-import * as CONST from './constants';
-import { Position, projection } from './utils';
-import { Floor, Wall } from './background';
-import Board from './components/table';
-import Net from './components/net';
-import Ball from './components/ball';
-import Scoreboard from './components/scoreboard';
-import Opponent from './players/opponent';
 import User from './players/user';
-import { initAssets, removeAssetsEvent, referee } from './assets';
+import Net from './components/net';
+import * as CONST from './constants';
+import Ball from './components/ball';
+import Board from './components/table';
+import { Floor, Wall } from './background';
+import Opponent from './players/opponent';
+import { Position, projection } from './utils';
+import Scoreboard from './components/scoreboard';
 import { resetGame, startGame, initMouseEvent } from './game';
+import { initAssets, removeAssetsEvent, referee } from './assets';
 
 const canvas = document.getElementById('game');
+
 canvas.width = CONST.CANVAS_WIDTH;
 canvas.height = CONST.CANVAS_HEIGHT;
 
@@ -22,11 +23,11 @@ const introElement = document.body.querySelector('.intro');
 const form = introElement.querySelector('form');
 
 const App = {
-  'state': CONST.STATE_INIT,
-  'assets': {
-    'total': 7,
-    'loadCount': 0
-  }
+  state: CONST.STATE_INIT,
+  assets: {
+    total: 7,
+    loadCount: 0,
+  },
 };
 
 // Game components
@@ -39,7 +40,7 @@ const obj = {
   ball,
   player,
   opponent,
-  scoreboard
+  scoreboard,
 };
 
 // Check for load of assets
@@ -58,7 +59,8 @@ function loadComplete() {
 function onPause() {
   layoutElement.style.display = 'block';
   infoElement.style.display = 'table';
-  infoElement.querySelector('.content').innerHTML = 'Press ESC to pause / resume';
+  infoElement.querySelector('.content').innerHTML =
+    'Press ESC to pause / resume';
 }
 
 // remove DOM on resume
@@ -74,8 +76,8 @@ function handleFormSubmit(e) {
   layoutElement.style.display = 'none';
 
   const config = {
-    'playerName': (e.target.elements.player.value).toUpperCase(),
-    'bestOfGames': parseInt(e.target.elements.bestof.value)
+    playerName: e.target.elements.player.value.toUpperCase(),
+    bestOfGames: parseInt(e.target.elements.bestof.value),
   };
 
   initGame(config);
@@ -83,7 +85,6 @@ function handleFormSubmit(e) {
 
 // Display intro components and configure game
 function displayIntro() {
-
   initComponents();
 
   infoElement.style.display = 'none';
@@ -95,15 +96,35 @@ function displayIntro() {
 
 // Initialize and draw game components on canvas
 function initComponents() {
-  ctx.clearRect(-500, -500, CONST.CANVAS_WIDTH + 500, CONST.CANVAS_HEIGHT + 500);
+  ctx.clearRect(
+    -500,
+    -500,
+    CONST.CANVAS_WIDTH + 500,
+    CONST.CANVAS_HEIGHT + 500,
+  );
 
   projection.camera.position.x = CONST.HALF_CANVAS_WIDTH;
-  projection.camera.position.y = CONST.CANVAS_HEIGHT <= -CONST.MAX_CAMERA_Y ? -CONST.CANVAS_HEIGHT : CONST.MAX_CAMERA_Y;
+  projection.camera.position.y =
+    CONST.CANVAS_HEIGHT <= -CONST.MAX_CAMERA_Y
+      ? -CONST.CANVAS_HEIGHT
+      : CONST.MAX_CAMERA_Y;
   projection.viewplane.x = CONST.HALF_CANVAS_WIDTH;
 
-  const ballStartPosition = new Position(CONST.HALF_CANVAS_WIDTH, CONST.BOARD_Y - CONST.BALL_START_HEIGHT, CONST.BOARD_Z);
-  const playerPosition = new Position(0, CONST.BOARD_Y - CONST.BALL_START_HEIGHT, CONST.PLAYER_Z_POSITION);
-  const opponentPosition = new Position(1000, CONST.BOARD_Y - CONST.BALL_START_HEIGHT, CONST.OPPONENT_Z_POSITION);
+  const ballStartPosition = new Position(
+    CONST.HALF_CANVAS_WIDTH,
+    CONST.BOARD_Y - CONST.BALL_START_HEIGHT,
+    CONST.BOARD_Z,
+  );
+  const playerPosition = new Position(
+    0,
+    CONST.BOARD_Y - CONST.BALL_START_HEIGHT,
+    CONST.PLAYER_Z_POSITION,
+  );
+  const opponentPosition = new Position(
+    1000,
+    CONST.BOARD_Y - CONST.BALL_START_HEIGHT,
+    CONST.OPPONENT_Z_POSITION,
+  );
 
   obj.floor = new Floor();
   obj.walls = new Wall();
@@ -122,7 +143,13 @@ function initComponents() {
 // Initialize game with configuration
 function initGame(config) {
   const scoreboardPosition = new Position(20, 20);
-  obj.scoreboard = new Scoreboard(scoreboardPosition, obj.player, config, displayWin);
+
+  obj.scoreboard = new Scoreboard(
+    scoreboardPosition,
+    obj.player,
+    config,
+    displayWin,
+  );
 
   referee.play();
   startGame(ctx, obj, onPause, onResume);
@@ -130,7 +157,6 @@ function initGame(config) {
 
 // Display winner component for game
 function displayWin(player) {
-
   referee.play();
 
   const playAgainBtn = document.createElement('button');
@@ -152,12 +178,12 @@ function displayWin(player) {
 
 function run() {
   switch (App.state) {
-  case CONST.STATE_INIT:
-    initAssets(loadComplete);
-    break;
-  case CONST.STATE_LOADED:
-    displayIntro();
-    break;
+    case CONST.STATE_INIT:
+      initAssets(loadComplete);
+      break;
+    case CONST.STATE_LOADED:
+      displayIntro();
+      break;
   }
 }
 

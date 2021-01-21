@@ -8,7 +8,6 @@ let clapHigh;
 let clapLow;
 
 export function initAssets(callbackFn) {
-
   sprite = new Image();
   // sprite.src = App.assets.src + 'sprite.png';
   sprite.src = require('../assets/sprite.png');

@@ -6,18 +6,26 @@ export class Floor {
     const y = CONST.TABLE_HEIGHT;
 
     this.surface3d = {
-      'topLeft': new Position(CONST.LEFT_WALL, y, CONST.END_WALL),
-      'topRight': new Position(CONST.RIGHT_WALL, y, CONST.END_WALL),
-      'bottomRight': new Position(CONST.RIGHT_WALL, y, projection.camera.position.z + 1),
-      'bottomLeft': new Position(CONST.LEFT_WALL, y, projection.camera.position.z + 1)
-    }
+      topLeft: new Position(CONST.LEFT_WALL, y, CONST.END_WALL),
+      topRight: new Position(CONST.RIGHT_WALL, y, CONST.END_WALL),
+      bottomRight: new Position(
+        CONST.RIGHT_WALL,
+        y,
+        projection.camera.position.z + 1,
+      ),
+      bottomLeft: new Position(
+        CONST.LEFT_WALL,
+        y,
+        projection.camera.position.z + 1,
+      ),
+    };
 
     this.surface2d = {
-      'topLeft': projection.get2dProjection(this.surface3d.topLeft),
-      'topRight': projection.get2dProjection(this.surface3d.topRight),
-      'bottomRight': projection.get2dProjection(this.surface3d.bottomRight),
-      'bottomLeft': projection.get2dProjection(this.surface3d.bottomLeft)
-    }
+      topLeft: projection.get2dProjection(this.surface3d.topLeft),
+      topRight: projection.get2dProjection(this.surface3d.topRight),
+      bottomRight: projection.get2dProjection(this.surface3d.bottomRight),
+      bottomLeft: projection.get2dProjection(this.surface3d.bottomLeft),
+    };
   }
 
   // Draw floor on canvas
@@ -31,7 +39,7 @@ export class Floor {
     ctx.fillStyle = '#90A4AE';
     ctx.fill();
     ctx.closePath();
-  }
+  };
 }
 
 export class Wall {
@@ -40,36 +48,37 @@ export class Wall {
     const top = projection.camera.position.y;
 
     this.surface3d = {
-      'leftWall': [
+      leftWall: [
         new Position(CONST.LEFT_WALL, y, projection.camera.position.z + 1),
         new Position(CONST.LEFT_WALL, y, CONST.END_WALL),
         new Position(CONST.LEFT_WALL, top, CONST.END_WALL),
-        new Position(CONST.LEFT_WALL, top, projection.camera.position.z + 1)
+        new Position(CONST.LEFT_WALL, top, projection.camera.position.z + 1),
       ],
-      'backWall': [
+      backWall: [
         new Position(CONST.LEFT_WALL, y, CONST.END_WALL),
         new Position(CONST.LEFT_WALL, top, CONST.END_WALL),
         new Position(CONST.RIGHT_WALL, top, CONST.END_WALL),
-        new Position(CONST.RIGHT_WALL, y, CONST.END_WALL)
+        new Position(CONST.RIGHT_WALL, y, CONST.END_WALL),
       ],
-      'rightWall': [
+      rightWall: [
         new Position(CONST.RIGHT_WALL, y, projection.camera.position.z + 1),
         new Position(CONST.RIGHT_WALL, y, CONST.END_WALL),
         new Position(CONST.RIGHT_WALL, top, CONST.END_WALL),
-        new Position(CONST.RIGHT_WALL, top, projection.camera.position.z + 1)
-      ]
-    }
+        new Position(CONST.RIGHT_WALL, top, projection.camera.position.z + 1),
+      ],
+    };
 
     this.surface2d = {
-      'leftWall': this.surface3d.leftWall.map(projection.get2dProjection),
-      'backWall': this.surface3d.backWall.map(projection.get2dProjection),
-      'rightWall': this.surface3d.rightWall.map(projection.get2dProjection)
-    }
+      leftWall: this.surface3d.leftWall.map(projection.get2dProjection),
+      backWall: this.surface3d.backWall.map(projection.get2dProjection),
+      rightWall: this.surface3d.rightWall.map(projection.get2dProjection),
+    };
   }
 
   // Draw leftside wall on canvas
   drawLeftWall = (ctx) => {
-    let startPosition = this.surface2d.leftWall[0];
+    const startPosition = this.surface2d.leftWall[0];
+
     ctx.beginPath();
     ctx.moveTo(startPosition.x, startPosition.y);
     for (const point of this.surface2d.leftWall) {
@@ -79,11 +88,12 @@ export class Wall {
     ctx.fillStyle = '#BDBDBD';
     ctx.fill();
     ctx.closePath();
-  }
+  };
 
   // Draw backside wall on canvas
   drawBackWall = (ctx) => {
-    let startPosition = this.surface2d.backWall[0];
+    const startPosition = this.surface2d.backWall[0];
+
     ctx.beginPath();
     ctx.moveTo(startPosition.x, startPosition.y);
     for (const point of this.surface2d.backWall) {
@@ -93,11 +103,12 @@ export class Wall {
     ctx.fillStyle = '#BDBDBD';
     ctx.fill();
     ctx.closePath();
-  }
+  };
 
   // Draw rightside wall on canvas
   drawRightWall = (ctx) => {
-    let startPosition = this.surface2d.rightWall[0];
+    const startPosition = this.surface2d.rightWall[0];
+
     ctx.beginPath();
     ctx.moveTo(startPosition.x, startPosition.y);
     for (const point of this.surface2d.rightWall) {
@@ -107,13 +118,12 @@ export class Wall {
     ctx.fillStyle = '#BDBDBD';
     ctx.fill();
     ctx.closePath();
-  }
+  };
 
   // Draw walls on canvas
   draw = (ctx) => {
     this.drawLeftWall(ctx);
     this.drawBackWall(ctx);
     this.drawRightWall(ctx);
-  }
-
+  };
 }

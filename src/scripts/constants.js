@@ -17,13 +17,13 @@ export const HALF_CANVAS_HEIGHT = CANVAS_HEIGHT / 2;
 export const MAX_CAMERA_Y = -1200;
 
 // colors
-export const BOARD_BACKGROUND = "#284088";
-export const BALL_BACKGROUND = "#FFD740";
-export const BALL_BORDER = "#FFC400";
-export const BLACK_A = "#000000";
-export const BLACK_B = "#212121";
-export const BLACK_C = "#424242";
-export const WHITE = "#FFFFFF";
+export const BOARD_BACKGROUND = '#284088';
+export const BALL_BACKGROUND = '#FFD740';
+export const BALL_BORDER = '#FFC400';
+export const BLACK_A = '#000000';
+export const BLACK_B = '#212121';
+export const BLACK_C = '#424242';
+export const WHITE = '#FFFFFF';
 
 // board export constants
 export const TABLE_HEIGHT = 0;
@@ -73,7 +73,7 @@ export const UP_ANGLE = 30;
 export const SIDE_ANGLE = 0;
 export const MAX_MOVE_VELOCITY = 1200;
 
-//background export constants
+// background export constants
 export const LEFT_WALL = HALF_CANVAS_WIDTH - BOARD_WIDTH * 2;
 export const RIGHT_WALL = HALF_CANVAS_WIDTH + BOARD_WIDTH * 2;
 export const END_WALL = BOARD_END + BOARD_WIDTH * 2;
