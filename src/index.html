@@ -31,7 +31,7 @@
         <form>
           <div class="row">
             <p>YOUR NAME</p>
-            <input type="text" name="player" value="HUMAN" maxlength="10">
+            <input id="player-name" type="text" name="player" value="HUMAN" maxlength="10">
           </div>
           <div class="row">
             <p>BEST OF</p>
@@ -55,6 +55,23 @@
   </div>
 
   <script src="./scripts/index.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const playerNameInput = document.getElementById('player-name')
+
+      playerNameInput.addEventListener('focus', function () {
+        if (this.value === "HUMAN") {
+          this.value = '';
+        }
+      })
+
+      playerNameInput.addEventListener('blur', function () {
+        if (this.value === "") {
+          this.value = "HUMAN";
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>
