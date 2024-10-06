@@ -39,13 +39,20 @@ let animationId;
 let lastFrameTime;
 let onPause, onResume;
 
+let fps = 60;
+let fpsInterval = 1000 / fps; // Calculate interval time per frame
+let then = performance.now(); // Set the current time
+let elapsed;
+
 function startGame(gameCtx, obj, pauseFn, resumeFn) {
   ctx = gameCtx;
   ({ floor, walls, table, net, ball, player, opponent, scoreboard } = obj);
   onPause = pauseFn;
   onResume = resumeFn;
   initEscapeEvent();
-  renderGame();
+
+  then = performance.now(); // Initialize 'then' with the current time
+  animationId = requestAnimationFrame(renderGame); // Start the game loop
 }
 
 // Draw on canvas sequentially
@@ -63,42 +70,54 @@ function drawSequence(ctx) {
 
 // Perform game loop operations
 function renderGame() {
-  ctx.clearRect(
-    -500,
-    -500,
-    CONST.CANVAS_WIDTH + 500,
-    CONST.CANVAS_HEIGHT + 500,
-  );
-
-  floor.draw(ctx);
-  walls.draw(ctx);
-  scoreboard.draw(ctx);
-
-  if (ball.current3dPos.z > opponent.position.z) {
-    drawSequence(ctx);
-    opponent.draw(ctx);
-  } else {
-    opponent.draw(ctx);
-    drawSequence(ctx);
-  }
-
-  if (Game.state.begin && !Game.state.isOver) {
-    player.draw(ctx);
-    updateStates();
-
-    if (!Game.state.served) {
-      serveBall();
-    } else if (Game.state.inPlay) {
-      hitBall();
-    }
-  } else {
-    cancelAnimationFrame(animationId);
-
-    return;
-  }
-
-  lastFrameTime = performance.now();
+  // request another frame
   animationId = requestAnimationFrame(renderGame);
+
+  // calculate the elapsed time since the last frame
+  let now = performance.now();
+  elapsed = now - then;
+
+  // if enough time has passed, draw the next frame
+  if (elapsed > fpsInterval) {
+    then = now - (elapsed % fpsInterval);
+
+    ctx.clearRect(
+      -500,
+      -500,
+      CONST.CANVAS_WIDTH + 500,
+      CONST.CANVAS_HEIGHT + 500,
+    );
+
+    // Draw game elements sequentially
+    floor.draw(ctx);
+    walls.draw(ctx);
+    scoreboard.draw(ctx);
+
+    if (ball.current3dPos.z > opponent.position.z) {
+      drawSequence(ctx);
+      opponent.draw(ctx);
+    } else {
+      opponent.draw(ctx);
+      drawSequence(ctx);
+    }
+
+    if (Game.state.begin && !Game.state.isOver) {
+      player.draw(ctx);
+      updateStates();
+
+      if (!Game.state.served) {
+        serveBall();
+      } else if (Game.state.inPlay) {
+        hitBall();
+      }
+    } else {
+      cancelAnimationFrame(animationId);
+      return;
+    }
+
+    // Store the last frame time
+    lastFrameTime = performance.now();
+  }
 }
 
 // Reset player's bounce count
