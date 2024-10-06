@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A ping pong game",
   "main": "index.js",
+  "engines": {
+    "npm": "6.14.17",
+    "node": "14.19.3"
+  },
   "scripts": {
     "clean": "rm -rf dist/*",
     "start": "parcel src/index.html",
@@ -27,15 +31,16 @@
     "url": "https://github.com/shresthalucky/PingPong/issues"
   },
   "homepage": "https://github.com/shresthalucky/PingPong#readme",
-  "dependencies": {},
+  "dependencies": {
+    "gh-pages": "^3.1.0",
+    "parcel-bundler": "^1.12.4"
+  },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^4.19.1",
     "eslint-config-leapfrog": "^3.0.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "gh-pages": "^3.1.0",
-    "parcel-bundler": "^1.12.4",
     "prettier": "^2.2.1"
   }
 }
