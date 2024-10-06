@@ -1,0 +1,42 @@
+name: PingPong CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14.19.3'
+
+    - name: Install dependencies
+      run: npm install --omit=dev
+
+    # - name: Run lint
+    #   run: npm run lint
+
+    # - name: Run tests
+    #   run: npm test
+
+    - name: Build project
+      run: npm run build
+
+    - name: Deploy to gh-pages
+      if: success()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.PRIVATE_DEPLOY_KEY }}
+        publish_dir: ./dist
+        branch: gh-pages
